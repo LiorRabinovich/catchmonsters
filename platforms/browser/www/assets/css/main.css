@@ -1,0 +1,180 @@
+/* cyrillic */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/cyrillic.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+
+/* latin-ext */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* latin */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+html *,
+html *:focus,
+html *:active,
+html *:hover {
+    box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    outline: none !important;
+    font-family: 'Russo One', sans-serif;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: url('../img/background.jpeg');
+    direction: rtl;
+    font-family: 'Russo One', sans-serif;
+    margin: 0;
+    background-position: center top;
+    background-size: cover;
+}
+
+#first-screen {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 50px;
+    text-align: center;
+}
+
+#first-screen h1 {
+    margin: 0;
+    font-size: 35px;
+    text-align: center;
+    position: relative;
+    background: -webkit-linear-gradient(#fff, #eee);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 30px;
+}
+
+#first-screen h1>span {
+    background: -webkit-linear-gradient(#ff1a1a, #d60809);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes btnAnimation {
+    0% {
+        transform: translateY(-10%);
+    }
+    50% {
+        transform: translateY(10%);
+    }
+    100% {
+        transform: translateY(-10%);
+    }
+}
+
+.btn-big {
+    border: 0;
+    text-align: center;
+    background: url('../img/pokeball.png');
+    width: 128px;
+    height: 128px;
+    transition: 1s;
+    animation: btnAnimation 1s infinite;
+}
+
+.btn-big>span {
+    background: rgba(0, 0, 0, .8);
+    display: block;
+    color: #fff;
+    width: 100%;
+    font-size: 20px;
+}
+
+#game-screen {
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
+}
+
+.speaker,.speaker * {
+    direction: ltr;
+}
+
+.speaker {
+    height: 30px;
+    width: 30px;
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.speaker > span {
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #fff;
+    margin: 11px 0 0 2px;
+}
+
+.speaker > span:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    border-width: 10px 14px 10px 15px;
+    left: -13px;
+    top: 5px;
+}
+
+.speaker > span:before {
+    transform: rotate(45deg);
+    border-radius: 0 50px 0 0;
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-style: double;
+    border-color: #fff;
+    border-width: 7px 7px 0 0;
+    left: 18px;
+    top: 9px;
+    transition: all 0.2s ease-out;
+}
+
+.speaker:hover > span:before {
+    transform: scale(0.8) translate(-3px, 0) rotate(42deg);
+}
+
+.speaker.mute > span:before {
+    transform: scale(0.5) translate(-15px, 0) rotate(36deg);
+    opacity: 0;
+}
+
+@media (min-width:420px) {}

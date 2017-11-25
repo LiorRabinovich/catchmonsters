@@ -1,0 +1,191 @@
+/* cyrillic */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/cyrillic.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+
+/* latin-ext */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* latin */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+html *,
+html *:focus,
+html *:active,
+html *:hover {
+    box-sizing: border-box !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    outline: none !important;
+    font-family: 'Russo One', sans-serif !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    direction: ltr;
+    font-family: 'Russo One', sans-serif;
+    margin: 0;
+    background-position: center top;
+    background-size: cover;
+    position: relative;
+    cursor: url('../img/cursor.png'), auto;
+    background: url('../img/background.jpeg');
+}
+
+#game-screen {
+    height: calc(100% - 60px);
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+#header {
+    height: 60px;
+    width: 100%;
+    overflow: hidden;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+#header::after {
+    content: " ";
+    clear: both;
+    display: table;
+}
+
+#pokemon {
+    position: absolute;
+}
+
+#score {
+    float: left;
+}
+
+#score::before {
+    background: url('../img/pokeball.png');
+    width: 30px;
+    height: 30px;
+    content: " ";
+    display: inline-block;
+    vertical-align: middle;
+    background-size: cover;
+    margin-right: 5px;
+}
+
+#score span {
+    padding-top: 2px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#timer {
+    padding-top: 2px;
+    text-align: center;
+    font-size: 20px;
+    color: black;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    float: right;
+}
+
+.hide {
+    display: none !important;
+}
+
+#cursor {
+    position: absolute;
+    transition: all 0.4;
+    opacity: 0.6;
+}
+
+#start {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+
+#start-animate {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#start-animate::before {
+    content: " ";
+    width: 100%;
+    height: 0;
+    border-top: 5px dotted #fff;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 999;
+    opacity: 0.8;
+}
+
+#start-animate-pokemon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -36px;
+    margin-left: -36px;
+}
+
+@keyframes startAnimateCursor {
+    from {
+        left: -10px;
+    }
+    to {
+        left: calc(100% - 10px);
+    }
+}
+
+#start-animate-cursor {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    z-index: 9999;
+    opacity: 0.8;
+    position: absolute;
+    opacity: 0.8;
+    animation: startAnimateCursor 1s infinite;
+}
