@@ -60,8 +60,8 @@ main.prototype = {
         var self = this;
 
         // listen on pokemon touchmove event
-        this._cache.$body.on('touchmove', '#pokemon', function () {
-            $(this).animate({ width: 20, height: 20, top: 0 }, function () {
+        this._cache.$gameScreen.on('touchmove', '#pokemon', function () {
+            $(this).animate({ width: 20, height: 20, top: 0, left: 0 }, function () {
                 // remove pokemon element
                 $(this).remove();
                 // catch current pokemon
@@ -70,12 +70,72 @@ main.prototype = {
         });
 
         // listen on start touchmove event
-        this._cache.$body.on('touchmove', '#start', function () {
+        this._cache.$gameScreen.on('touchmove', '#start', function () {
             // remove start element
             $(this).remove();
             // catch current pokemon
             self._catchCurrentPokemon();
         });
+
+        // listen on gamescreen touchmove event
+
+        this._cache.$gameScreen.on('touchstart touchend touchmove', function (e) {
+            var touch = null,
+                rect = this.getBoundingClientRect(),
+                pagePosition = null
+
+            if (e.originalEvent.touches[0]) touch = e.originalEvent.touches[0];
+            else if (e.originalEvent.changedTouches[0]) touch = e.originalEvent.changedTouches[0];
+
+
+            pagePosition = {
+                top: (touch.pageY - rect.top),
+                left: (touch.pageX - rect.left)
+            }
+
+            var pokemonPosition = $('#start').offset();
+
+            if (
+                pagePosition.top < pokemonPosition.top &&
+                (pagePosition.top + $('#start').height()) > pokemonPosition.top &&
+                pagePosition.left < pokemonPosition.left &&
+                (pagePosition.left + $('#start').width()) > pokemonPosition.left
+            ) {
+                console.log('boom', pagePosition);
+            }
+
+            console.log((pagePosition.left + $('#start').width()));
+            console.log(pokemonPosition.left);
+
+            $(this).append('<img class="pokeball" style="top:' + pagePosition.top + 'px;left:' + pagePosition.left + 'px" src="assets/img/cursor.png" />')
+            $('.pokeball').animate({
+                opacity: 0,
+            }, 600, function () {
+                $(this).remove();
+            });
+        });
+
+        /*
+                this._cache.$gameScreen.on({
+                    'touchstart mousedown': function (e) {
+                        $(this).mousemove();//('touchmove mousemove', move);
+                        console.log(e);
+                        move(e);
+                    },
+                    'touchend mouseup': function (e) {
+                        $(this).off('touchmove mousemove');
+                    }
+                });
+        */
+        function move(e) {
+            console.log(e.pageX);
+            $('.cursor').css({
+                left: (e.pageX - 10) + 'px',
+                top: (e.pageY - 10) + 'px',
+                cursor: 'pointer'
+            });
+        }
+
     },
     _startApp: function () {
         // get random pokemon to current pokemon
@@ -118,6 +178,5 @@ main.prototype = {
 }
 
 $(function () {
-
     var mainClass = new main();
 });

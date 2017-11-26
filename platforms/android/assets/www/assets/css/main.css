@@ -70,7 +70,6 @@ body {
 }
 
 #header {
-    height: 60px;
     width: 100%;
     overflow: hidden;
     padding: 10px;
@@ -80,6 +79,7 @@ body {
     -webkit-text-fill-color: white;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
+    background: rgba(0,0,0,.4);
 }
 
 #header::after {
@@ -128,10 +128,10 @@ body {
     display: none !important;
 }
 
-#cursor {
+.cursor {
     position: absolute;
-    transition: all 0.4;
-    opacity: 0.6;
+    top: 0;
+    left: 0;
 }
 
 #start {
