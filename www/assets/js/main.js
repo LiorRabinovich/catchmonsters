@@ -75,7 +75,7 @@ main.prototype = {
 
             var target = document.elementFromPoint(touch.pageX, touch.pageY);
             if ($(target).closest('#start').length > 0) {
-                $('#start').animate({ width: 20, height: 20, top: 0, left: 0 }, function () {
+                $('#start').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
                     // remove start element
                     $('#start').remove();
                     // catch current pokemon
@@ -83,7 +83,7 @@ main.prototype = {
                 });
             }
             if ($(target).closest('#pokemon').length > 0) {
-                $('#pokemon').animate({ width: 20, height: 20, top: 0, left: 0 }, function () {
+                $('#pokemon').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
                     // remove pokemon element
                     $('#pokemon').remove();
                     // catch current pokemon
@@ -114,7 +114,8 @@ main.prototype = {
         // get random pokemon to current pokemon
         this._randomPokemon();
         // print new pokemon element in game screen
-        this._cache.$gameScreen.append('<img id="pokemon" src="assets/img/pokemons/' + this._vars.currentPokemon + '.png">');
+        var newq = this._makeNewPosition();
+        this._cache.$gameScreen.append('<img id="pokemon" style="top: ' + newq[0] + 'px;left: ' + newq[1] + 'px;" src="assets/img/pokemons/' + this._vars.currentPokemon + '.png">');
         // animate pokemon
         this._animatePokemon();
     },
@@ -130,11 +131,11 @@ main.prototype = {
         });
     },
     _makeNewPosition: function () {
-        var h = this._cache.$gameScreen.height() - $('#pokemon').height();
-        var w = this._cache.$gameScreen.width() - $('#pokemon').width();
-
-        var nh = Math.floor(Math.random() * h);
-        var nw = Math.floor(Math.random() * w);
+        var $element = $('#pokemon'),
+            h = this._cache.$gameScreen.height() - (($element.length > 0 ? $element.height() : 100)),
+            w = this._cache.$gameScreen.width() - (($element.length > 0 ? $element.width() : 100)),
+            nh = Math.floor(Math.random() * h),
+            nw = Math.floor(Math.random() * w);
 
         return [nh, nw];
     }
