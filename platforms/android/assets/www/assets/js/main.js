@@ -70,46 +70,50 @@ main.prototype = {
         });
 
         // listen on start touchmove event
+        /*
         this._cache.$gameScreen.on('touchmove', '#start', function () {
             // remove start element
             $(this).remove();
             // catch current pokemon
             self._catchCurrentPokemon();
         });
+        */
 
         // listen on gamescreen touchmove event
-
         this._cache.$gameScreen.on('touchstart touchend touchmove', function (e) {
-            var touch = null;
-            var rect = this.getBoundingClientRect();
+            var touch = null,
+                rect = this.getBoundingClientRect(),
+                pagePosition = null
 
             if (e.originalEvent.touches[0]) touch = e.originalEvent.touches[0];
             else if (e.originalEvent.changedTouches[0]) touch = e.originalEvent.changedTouches[0];
 
-            $(this).append('<img class="cursor" style="top:' + (touch.pageY - rect.top) + 'px;left:' + (touch.pageX - rect.left) + 'px" src="assets/img/cursor.png" />');
-            // $('.cursor').removeClass('cursor');
-        });
+            pagePosition = {
+                top: (touch.pageY - rect.top),
+                left: (touch.pageX - rect.left)
+            }
 
-        /*
-                this._cache.$gameScreen.on({
-                    'touchstart mousedown': function (e) {
-                        $(this).mousemove();//('touchmove mousemove', move);
-                        console.log(e);
-                        move(e);
-                    },
-                    'touchend mouseup': function (e) {
-                        $(this).off('touchmove mousemove');
-                    }
-                });
-        */
-        function move(e) {
-            console.log(e.pageX);
-            $('.cursor').css({
-                left: (e.pageX - 10) + 'px',
-                top: (e.pageY - 10) + 'px',
-                cursor: 'pointer'
+            var target = document.elementFromPoint(touch.pageX, touch.pageY);
+            if ($(target).closest('#start').length > 0) {
+                // remove start element
+                $('#start').remove();
+                // catch current pokemon
+                self._catchCurrentPokemon();
+            }
+            if ($(target).closest('#pokemon').length > 0) {
+                // remove pokemon element
+                $('#pokemon').remove();
+                // catch current pokemon
+                self._catchCurrentPokemon();
+            }
+
+            $(this).append('<img class="pokeball" style="top:' + pagePosition.top + 'px;left:' + pagePosition.left + 'px" src="assets/img/cursor.png" />')
+            $('.pokeball').animate({
+                opacity: 0,
+            }, 600, function () {
+                $(this).remove();
             });
-        }
+        });
 
     },
     _startApp: function () {

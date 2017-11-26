@@ -144,6 +144,10 @@ body {
     margin-left: -50px;
 }
 
+#start:hover {
+    background: #777;
+}
+
 #start-animate {
     position: relative;
     width: 100%;
