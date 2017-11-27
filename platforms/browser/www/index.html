@@ -3,31 +3,31 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>King of the Pokemon</title>
-    <!-- styles -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CathPokemon</title>
     <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 
 <body>
-    <a href="#" class="speaker"><span></span></a>
-    <div id="first-screen">
-        <h1>King<span>Of</span>The<span>Pokemon</span></h1>
-        <button class="btn-big">
-            <span>New Game</span>
-        </button>
+    <div id="header">
+        <div id="score">
+            <span>0</span>
+        </div>
+        <div id="timer">
+            <span>00:30</span>
+        </div>
     </div>
-    <div id="game-screen" class="hide">
-
+    <div id="game-screen">
+        <div id="start">
+            <div id="start-animate">
+                <img id="start-animate-pokemon" src="assets/img/pokemons/alakazam.png" />
+                <img id="start-animate-cursor" src="assets/img/start-cursor.png" />
+            </div>
+        </div>
     </div>
-
-    <!-- audio -->
-    <audio class="audio" autoplay loop muted><source src="assets/music/background.mp3" type="audio/mpeg" audioaudio></audio>
-
-    <!-- scripts -->
-    <script src="assets/js/jquery-3.2.1.slim.min.js"></script>
+    <script src="assets/js/jquery-3.2.1.min.js"></script>
     <script src="assets/js/main.js"></script>
-
 </body>
 
 </html>

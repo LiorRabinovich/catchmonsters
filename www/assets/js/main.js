@@ -39,7 +39,8 @@ main.prototype = {
             'weezing',
             'wigglytuff'
         ],
-        myPokemons: []
+        myPokemons: [],
+        startTime: 90
     },
     _cache: {
         $windows: $(window),
@@ -50,20 +51,43 @@ main.prototype = {
         this._cache.$gameScreen = $('#game-screen');
         this._cache.startAnimatePokemon = $('#start-animate-pokemon');
         this._cache.$pokeball = $('#pokeball');
-        this._cache.$score = $('#score');
+        this._cache.$score = $('#score span');
+        this._cache.$timer = $('#timer span');
+        this._cache.$gameAudio = $('#game-audio');
+        this._cache.$swipeAudio = $('#swipe-audio');
     },
     _buildElements: function () {
+        // start play game audio 
+        this._cache.$gameAudio[0].volume = 0.4;
+        // this._cache.$gameAudio[0].autoplay = true;
+        this._cache.$gameAudio[0].loop = true;
+
+        // set swipe audio volume
+        this._cache.$swipeAudio[0].volume = 0.6;
+
         // build elements start app
         this._startApp();
+
+        this._cache.$timer.html(Math.floor(this._vars.startTime / 60) + ':' + Math.floor(this._vars.startTime % 60));
     },
     _bindEvents: function () {
         var self = this;
 
         // listen on gamescreen touchmove event
-        this._cache.$gameScreen.on('touchstart touchend touchmove', function (e) {
+        this._cache.$body.on('touchstart', function (e) {
+            self._cache.$swipeAudio[0].currentTime = 0;
+            self._cache.$swipeAudio[0].play();
+            self._cache.$swipeAudio[0].loop = true;
+        });
+        this._cache.$body.on('touchend', function (e) {
+            self._cache.$swipeAudio[0].currentTime = 0;
+            self._cache.$swipeAudio[0].play();
+            self._cache.$swipeAudio[0].loop = false;
+        });
+        this._cache.$body.on('touchstart touchend touchmove', function (e) {
             var touch = null,
                 rect = this.getBoundingClientRect(),
-                pagePosition = null
+                pagePosition = null;
 
             if (e.originalEvent.touches[0]) touch = e.originalEvent.touches[0];
             else if (e.originalEvent.changedTouches[0]) touch = e.originalEvent.changedTouches[0];
@@ -75,7 +99,8 @@ main.prototype = {
 
             var target = document.elementFromPoint(touch.pageX, touch.pageY);
             if ($(target).closest('#start').length > 0) {
-                $('#start').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                $('#start').html('<img style="width:30px;height:30px;"src="assets/img/pokeball-small.png"/>').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                    self._cache.$gameAudio[0].volume = 0.2;
                     // remove start element
                     $('#start').remove();
                     // catch current pokemon
@@ -83,7 +108,7 @@ main.prototype = {
                 });
             }
             if ($(target).closest('#pokemon').length > 0) {
-                $('#pokemon').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                $('#pokemon').attr('src', 'assets/img/pokeball-small.png').css({ 'width': 30, 'height': 30 }).animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
                     // remove pokemon element
                     $('#pokemon').remove();
                     // catch current pokemon
@@ -101,10 +126,16 @@ main.prototype = {
 
     },
     _startApp: function () {
+        var self = this;
         // get random pokemon to current pokemon
         this._randomPokemon();
         // add pokemon image to src
         this._cache.startAnimatePokemon.prop('src', 'assets/img/pokemons/' + this._vars.currentPokemon + '.png');
+        setInterval(function () {
+            self._vars.startTime--;
+            self._cache.$timer.html(Math.floor(self._vars.startTime / 60) + ':' + Math.floor(self._vars.startTime % 60));
+            if(self._vars.startTime == 0) console.log('boom');
+        }, 1000);
     },
     _catchCurrentPokemon: function () {
         // push current pokemon to my pokemons

@@ -55,29 +55,11 @@ main.prototype = {
     _buildElements: function () {
         // build elements start app
         this._startApp();
+        // force landscape
+
     },
     _bindEvents: function () {
         var self = this;
-
-        // listen on pokemon touchmove event
-        this._cache.$gameScreen.on('touchmove', '#pokemon', function () {
-            $(this).animate({ width: 20, height: 20, top: 0, left: 0 }, function () {
-                // remove pokemon element
-                $(this).remove();
-                // catch current pokemon
-                self._catchCurrentPokemon();
-            });
-        });
-
-        // listen on start touchmove event
-        /*
-        this._cache.$gameScreen.on('touchmove', '#start', function () {
-            // remove start element
-            $(this).remove();
-            // catch current pokemon
-            self._catchCurrentPokemon();
-        });
-        */
 
         // listen on gamescreen touchmove event
         this._cache.$gameScreen.on('touchstart touchend touchmove', function (e) {
@@ -95,16 +77,20 @@ main.prototype = {
 
             var target = document.elementFromPoint(touch.pageX, touch.pageY);
             if ($(target).closest('#start').length > 0) {
-                // remove start element
-                $('#start').remove();
-                // catch current pokemon
-                self._catchCurrentPokemon();
+                $('#start').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                    // remove start element
+                    $('#start').remove();
+                    // catch current pokemon
+                    self._catchCurrentPokemon();
+                });
             }
             if ($(target).closest('#pokemon').length > 0) {
-                // remove pokemon element
-                $('#pokemon').remove();
-                // catch current pokemon
-                self._catchCurrentPokemon();
+                $('#pokemon').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                    // remove pokemon element
+                    $('#pokemon').remove();
+                    // catch current pokemon
+                    self._catchCurrentPokemon();
+                });
             }
 
             $(this).append('<img class="pokeball" style="top:' + pagePosition.top + 'px;left:' + pagePosition.left + 'px" src="assets/img/cursor.png" />')
@@ -130,7 +116,8 @@ main.prototype = {
         // get random pokemon to current pokemon
         this._randomPokemon();
         // print new pokemon element in game screen
-        this._cache.$gameScreen.append('<img id="pokemon" src="assets/img/pokemons/' + this._vars.currentPokemon + '.png">');
+        var newq = this._makeNewPosition();
+        this._cache.$gameScreen.append('<img id="pokemon" style="top: ' + newq[0] + 'px;left: ' + newq[1] + 'px;" src="assets/img/pokemons/' + this._vars.currentPokemon + '.png">');
         // animate pokemon
         this._animatePokemon();
     },
@@ -146,11 +133,11 @@ main.prototype = {
         });
     },
     _makeNewPosition: function () {
-        var h = this._cache.$gameScreen.height() - $('#pokemon').height();
-        var w = this._cache.$gameScreen.width() - $('#pokemon').width();
-
-        var nh = Math.floor(Math.random() * h);
-        var nw = Math.floor(Math.random() * w);
+        var $element = $('#pokemon'),
+            h = this._cache.$gameScreen.height() - (($element.length > 0 ? $element.height() : 100)),
+            w = this._cache.$gameScreen.width() - (($element.length > 0 ? $element.width() : 100)),
+            nh = Math.floor(Math.random() * h),
+            nw = Math.floor(Math.random() * w);
 
         return [nh, nw];
     }

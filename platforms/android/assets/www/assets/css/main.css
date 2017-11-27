@@ -79,7 +79,7 @@ body {
     -webkit-text-fill-color: white;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
-    background: rgba(0,0,0,.4);
+    background: rgba(0, 0, 0, .4);
 }
 
 #header::after {
