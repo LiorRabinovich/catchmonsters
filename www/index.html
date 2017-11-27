@@ -9,20 +9,52 @@
     <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 
-<body>
-    <div id="header">
-        <div id="score">
-            <span>0</span>
+<body class="pause">
+
+    <div id="game-screen">
+        <div id="scores">
+            <div id="score">
+                <span>0</span>
+            </div>
+            <div id="best-score">
+                Best: 13
+            </div>
         </div>
         <div id="timer">
             <span></span>
         </div>
-    </div>
-    <div id="game-screen">
         <div id="start">
             <div id="start-animate">
                 <img id="start-animate-pokemon" src="assets/img/pokemons/alakazam.png" />
                 <img id="start-animate-cursor" src="assets/img/start-cursor.png" />
+            </div>
+        </div>
+    </div>
+
+    <div id="end-game" class="modal">
+        <div id="end-game-title">TIME UP</div>
+        <div id="end-game-scores">
+            <div id="end-game-scores-title" class="best">
+                POKEMONS:
+                <span>31</span>
+            </div>
+            <div id="end-game-scores-content">
+                <ul>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/butterfree.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
+                </ul>
             </div>
         </div>
     </div>

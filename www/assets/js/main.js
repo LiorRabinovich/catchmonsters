@@ -40,7 +40,8 @@ main.prototype = {
             'wigglytuff'
         ],
         myPokemons: [],
-        startTime: 90
+        startTime: 60,
+        timerInterval: null
     },
     _cache: {
         $windows: $(window),
@@ -68,7 +69,8 @@ main.prototype = {
         // build elements start app
         this._startApp();
 
-        this._cache.$timer.html(Math.floor(this._vars.startTime / 60) + ':' + Math.floor(this._vars.startTime % 60));
+        // print timer
+        this._cache.$timer.html(Math.floor(this._vars.startTime / 60) + ':' + ('0' + Math.floor(this._vars.startTime % 60)).slice(-2));
     },
     _bindEvents: function () {
         var self = this;
@@ -105,6 +107,8 @@ main.prototype = {
                     $('#start').remove();
                     // catch current pokemon
                     self._catchCurrentPokemon();
+                    // start timer
+                    self._startTimer();
                 });
             }
             if ($(target).closest('#pokemon').length > 0) {
@@ -131,10 +135,21 @@ main.prototype = {
         this._randomPokemon();
         // add pokemon image to src
         this._cache.startAnimatePokemon.prop('src', 'assets/img/pokemons/' + this._vars.currentPokemon + '.png');
-        setInterval(function () {
+    },
+    _startTimer: function () {
+        var self = this;
+        // set inertval
+        this._vars.timerInterval = setInterval(function () {
             self._vars.startTime--;
-            self._cache.$timer.html(Math.floor(self._vars.startTime / 60) + ':' + Math.floor(self._vars.startTime % 60));
-            if(self._vars.startTime == 0) console.log('boom');
+            // print timer
+            self._cache.$timer.html(Math.floor(self._vars.startTime / 60) + ':' + ('0' + Math.floor(self._vars.startTime % 60)).slice(-2));
+            // clear interval
+            if (self._vars.startTime == 0) {
+                $('#pokemon').animate({opacity: 0},function() {
+                    $(this).remove();
+                });
+                clearInterval(self._vars.timerInterval);
+            }
         }, 1000);
     },
     _catchCurrentPokemon: function () {
@@ -158,7 +173,7 @@ main.prototype = {
             newq = this._makeNewPosition();
 
         $('#pokemon').animate({ top: newq[0], left: newq[1] }, function () {
-            self._animatePokemon();
+            if (self._vars.startTime > 0) self._animatePokemon();
         });
     },
     _makeNewPosition: function () {
