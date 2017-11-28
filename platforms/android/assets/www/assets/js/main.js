@@ -56,6 +56,7 @@ main.prototype = {
         this._cache.$timer = $('#timer span');
         this._cache.$gameAudio = $('#game-audio');
         this._cache.$swipeAudio = $('#swipe-audio');
+        this._cache.$endGameScoresContent = $("#end-game-scores-content");
     },
     _buildElements: function () {
         // start play game audio 
@@ -68,6 +69,8 @@ main.prototype = {
 
         // build elements start app
         this._startApp();
+
+        this._cache.$endGameScoresContent.animate({ scrollTop: this._cache.$endGameScoresContent.prop("scrollHeight") }, 1500);
 
         // print timer
         this._cache.$timer.html(Math.floor(this._vars.startTime / 60) + ':' + ('0' + Math.floor(this._vars.startTime % 60)).slice(-2));
@@ -145,10 +148,7 @@ main.prototype = {
             self._cache.$timer.html(Math.floor(self._vars.startTime / 60) + ':' + ('0' + Math.floor(self._vars.startTime % 60)).slice(-2));
             // clear interval
             if (self._vars.startTime == 0) {
-                $('#pokemon').animate({opacity: 0},function() {
-                    $(this).remove();
-                });
-                clearInterval(self._vars.timerInterval);
+                self._timeup();
             }
         }, 1000);
     },
@@ -184,9 +184,17 @@ main.prototype = {
             nw = Math.floor(Math.random() * w);
 
         return [nh, nw];
+    },
+    _timeup: function () {
+        $('#pokemon').animate({ opacity: 0 }, function () {
+            $(this).remove();
+        });
+        clearInterval(self._vars.timerInterval);
+        this._cache.$endGameScoresContent.animate({ scrollTop: this._cache.this._cache.$endGameScoresContent.prop("scrollHeight") }, 1500);
     }
 }
 
 $(function () {
     var mainClass = new main();
+
 });

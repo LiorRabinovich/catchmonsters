@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/main.css" />
 </head>
 
-<body class="pause">
+<body>
 
     <div id="game-screen">
         <div id="scores">
@@ -17,7 +17,8 @@
                 <span>0</span>
             </div>
             <div id="best-score">
-                Best: 13
+                Best:
+                <span>13</span>
             </div>
         </div>
         <div id="timer">
@@ -32,30 +33,23 @@
     </div>
 
     <div id="end-game" class="modal">
-        <div id="end-game-title">TIME UP</div>
+        <div id="end-game-title">
+            <span>TIME UP</span>
+        </div>
         <div id="end-game-scores">
-            <div id="end-game-scores-title" class="best">
-                POKEMONS:
-                <span>31</span>
+            <div id="end-game-container">
+                <div id="end-game-scores-title">POKEMONS:
+                    <span></span>
+                </div>
+                <div id="end-game-scores-content">
+                    <ul></ul>
+                </div>
             </div>
-            <div id="end-game-scores-content">
-                <ul>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/butterfree.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                    <li><img src="assets/img/pokemons/alakazam.png" /></li>
-                </ul>
-            </div>
+        </div>
+        <div id="end-game-btns">
+            <button id="end-game-btns-play">
+                <div class="icon-play"></div>
+            </button>
         </div>
     </div>
 
