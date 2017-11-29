@@ -1,0 +1,407 @@
+@import "helpers";
+@import "_fontello";
+@import "compass/css3";
+@import "compass/utilities/sprites";
+@import "global-sprite/*.png";
+@include all-global-sprite-sprites(true);
+@import "pokemons-sprite/*.png";
+@include all-pokemons-sprite-sprites(true);
+
+/* cyrillic */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/cyrillic.woff2) format('woff2');
+    unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+
+
+/* latin-ext */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin-ext.woff2) format('woff2');
+    unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* latin */
+
+@font-face {
+    font-family: 'Russo One';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Russo One'), local('RussoOne-Regular'), url(../fonts/latin.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+
+html *,
+html *:focus,
+html *:active,
+html *:hover {
+    box-sizing: border-box !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -khtml-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    outline: none !important;
+    font-family: 'Russo One', sans-serif !important;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    direction: ltr;
+    font-family: 'Russo One', sans-serif;
+    margin: 0;
+    background-position: center top;
+    background-size: cover;
+    position: relative;
+    color: black;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    @extend .global-sprite-background;
+}
+
+body.pause #game-screen * {
+    animation: unset !important;
+}
+
+
+/* button */
+
+button {
+    font-size: 60px;
+    border: 0;
+    background-color: none;
+    @extend .global-sprite-pokeball;
+    @include resize-sprite($global-sprite-sprites, 'pokeball', 70);
+    animation: buttonAnimate 1s ease-in-out infinite alternate;
+    position: relative;
+    color: black;
+    -webkit-text-fill-color: #ffe600;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    text-align: center;
+    background-color: transparent;
+}
+
+#game-screen {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    font-size: 20px;
+}
+
+#pokemon {
+    position: absolute;
+}
+
+#scores {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+}
+
+#score {
+    line-height: 20px;
+}
+
+#score::before {
+    @extend .global-sprite-pokeball;
+    @include resize-sprite($global-sprite-sprites, 'pokeball', 15);
+    content: " ";
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#score span {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#best-score {
+    font-size: 16px;
+}
+
+#timer {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+}
+
+.hide {
+    display: none !important;
+}
+
+.pokeball {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    @extend .global-sprite-pokeball;
+    @include resize-sprite($global-sprite-sprites, 'pokeball', 12);
+}
+
+#start {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+    margin-left: -50px;
+}
+
+#start-animate {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#start-animate::before {
+    content: " ";
+    width: 100%;
+    height: 0;
+    border-top: 5px dotted #fff;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    z-index: 9;
+    opacity: 0.8;
+}
+
+#start-animate-pokemon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -36px;
+    margin-left: -36px;
+}
+
+#start-animate-cursor {
+    position: absolute;
+    top: 50%;
+    left: -10px;
+    z-index: 99;
+    opacity: 0.8;
+    position: absolute;
+    opacity: 0.8;
+    animation: startAnimateCursor 1s infinite;
+    @extend .global-sprite-start-cursor;
+}
+
+
+/* modal */
+
+.modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    z-index: 999;
+    text-align: center;
+    visibility: hidden;
+    top: -100%;
+    left: -100%;
+    transition: all .4s;
+    opacity: 0;
+}
+
+.modal * {
+    display: none;
+}
+
+.modal.show-modal {
+    visibility: visible;
+    top: 0;
+    left: 0;
+    opacity: 1;
+}
+
+.modal.show-modal * {
+    display: block;
+}
+
+
+/* end-game */
+
+
+/* end-game-title */
+
+#end-game-title {
+    height: 20%;
+    font-size: 30px;
+    animation: titleAnimate .6s;
+}
+
+#end-game-title span,
+#end-game-title::after {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#end-game-title::after {
+    content: " ";
+    height: 100%;
+}
+
+
+/* end-game-scores */
+
+#end-game-scores {
+    height: 45%;
+    background: #d60809;
+}
+
+#end-game-container {
+    width: 200px;
+    max-width: 100%;
+    margin: 0 auto;
+    animation: rubberBand 0.8s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+#end-game-scores::after,
+#end-game-container {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#end-game-scores::after {
+    content: " ";
+    height: 100%;
+}
+
+#end-game-scores-title {
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+}
+
+#end-game-scores-title.best {
+    position: relative;
+}
+
+#end-game-scores-title.best::after {
+    content: "NEW BEST";
+    top: -7px;
+    left: 0;
+    color: black;
+    -webkit-text-fill-color: #ffe600;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    font-size: 14px;
+    line-height: 14px;
+    position: absolute;
+}
+
+#end-game-scores-content {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    max-height: 100%;
+    height: 80px;
+    overflow: auto;
+    padding: 5px 0;
+}
+
+#end-game-scores-content ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+#end-game-scores-content li {
+    width: 100%;
+}
+
+#end-game-scores-content li div {
+    margin: 0 auto;
+}
+
+
+/* end-game-btns */
+
+#end-game-btns {
+    height: 35%;
+}
+
+#end-game-btns-play,
+#end-game-btns::after {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#end-game-btns::after {
+    content: " ";
+    height: 100%;
+}
+
+.catch-pokemon {
+    @extend .global-sprite-pokeball;
+    @include resize-sprite($global-sprite-sprites, 'pokeball', 20);
+}
+
+
+/*keyframes*/
+
+@keyframes buttonAnimate {
+    0% {
+        @include resize-sprite($global-sprite-sprites, 'pokeball', 60);
+        font-size: 50px;
+    }
+    100% {
+        @include resize-sprite($global-sprite-sprites, 'pokeball', 70);
+        font-size: 60px;
+    }
+}
+
+@keyframes rubberBand {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scaleX(1.25) scaleY(0.75);
+    }
+    40% {
+        transform: scaleX(0.75) scaleY(1.25);
+    }
+    60% {
+        transform: scaleX(1.15) scaleY(0.85);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes titleAnimate {
+    0% {
+        font-size: 16px;
+    }
+    100% {
+        font-size: 30px;
+    }
+}
+
+@keyframes startAnimateCursor {
+    from {
+        left: -10px;
+    }
+    to {
+        left: calc(100% - 10px);
+    }
+}

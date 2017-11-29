@@ -10,15 +10,20 @@
 </head>
 
 <body>
-    <div id="header">
-        <div id="score">
-            <span>0</span>
+
+    <div id="game-screen">
+        <div id="scores">
+            <div id="score">
+                <span>0</span>
+            </div>
+            <div id="best-score" class="hide">
+                Best:
+                <span></span>
+            </div>
         </div>
         <div id="timer">
-            <span>00:30</span>
+            <span></span>
         </div>
-    </div>
-    <div id="game-screen">
         <div id="start">
             <div id="start-animate">
                 <img id="start-animate-pokemon" src="assets/img/pokemons/alakazam.png" />
@@ -26,7 +31,34 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/jquery-3.2.1.min.js"></script>
+
+    <div id="end-game" class="modal">
+        <div id="end-game-title">
+            <span>TIME UP</span>
+        </div>
+        <div id="end-game-scores">
+            <div id="end-game-container">
+                <div id="end-game-scores-title">POKEMONS:
+                    <span></span>
+                </div>
+                <div id="end-game-scores-content">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+        <div id="end-game-btns">
+            <button id="end-game-btns-play">
+                <div class="icon-play"></div>
+            </button>
+        </div>
+    </div>
+
+    <audio id="game-audio">
+        <source src="assets/sounds/menu.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="swipe-audio">
+        <source src="assets/sounds/swipe.mp3" type="audio/mpeg">
+    </audio>
     <script src="assets/js/main.js"></script>
 </body>
 

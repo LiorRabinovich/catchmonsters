@@ -40,8 +40,11 @@ main.prototype = {
             'wigglytuff'
         ],
         myPokemons: [],
-        startTime: 60,
-        timerInterval: null
+        startTimer: 60,
+        timer: 0,
+        timerInterval: null,
+        bestScore: null,
+        storage: window.localStorage
     },
     _cache: {
         $windows: $(window),
@@ -50,13 +53,21 @@ main.prototype = {
     _cacheElements: function () {
         this._cache.$body = $('body');
         this._cache.$gameScreen = $('#game-screen');
-        this._cache.startAnimatePokemon = $('#start-animate-pokemon');
+        this._cache.$start = $('#start');
+        this._cache.$startAnimatePokemon = $('#start-animate-pokemon');
         this._cache.$pokeball = $('#pokeball');
         this._cache.$score = $('#score span');
         this._cache.$timer = $('#timer span');
         this._cache.$gameAudio = $('#game-audio');
         this._cache.$swipeAudio = $('#swipe-audio');
         this._cache.$endGameScoresContent = $("#end-game-scores-content");
+        this._cache.$endGameScoresContentList = $("#end-game-scores-content ul");
+        this._cache.$endGame = $('#end-game');
+        this._cache.$endGameBtnsPlay = $('#end-game-btns-play');
+        this._cache.$modal = $('.modal');
+        this._cache.$endGameScoresTitle = $('#end-game-scores-title span')
+        this._cache.$bestScore = $('#best-score');
+        this._cache.$bestScoreNumber = $('#best-score span');
     },
     _buildElements: function () {
         // start play game audio 
@@ -64,16 +75,27 @@ main.prototype = {
         // this._cache.$gameAudio[0].autoplay = true;
         this._cache.$gameAudio[0].loop = true;
 
+        // set timer
+        this._vars.timer = this._vars.startTimer;
+
         // set swipe audio volume
         this._cache.$swipeAudio[0].volume = 0.6;
+
+        // set and print best
+        var bestLocalStorege = this._vars.storage.getItem('best');
+        if (bestLocalStorege == null) {
+            this._cache.$bestScore.toggleClass('hide', true);
+        } else {
+            this._vars.bestScore = bestLocalStorege;
+            this._cache.$bestScore.toggleClass('hide', false);
+            this._cache.$bestScoreNumber.html(this._vars.bestScore);
+        }
 
         // build elements start app
         this._startApp();
 
-        this._cache.$endGameScoresContent.animate({ scrollTop: this._cache.$endGameScoresContent.prop("scrollHeight") }, 1500);
-
         // print timer
-        this._cache.$timer.html(Math.floor(this._vars.startTime / 60) + ':' + ('0' + Math.floor(this._vars.startTime % 60)).slice(-2));
+        this._cache.$timer.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
     },
     _bindEvents: function () {
         var self = this;
@@ -92,35 +114,43 @@ main.prototype = {
         this._cache.$body.on('touchstart touchend touchmove', function (e) {
             var touch = null,
                 rect = this.getBoundingClientRect(),
-                pagePosition = null;
+                pagePosition = null,
+                target = null;
 
+            // set touch
             if (e.originalEvent.touches[0]) touch = e.originalEvent.touches[0];
             else if (e.originalEvent.changedTouches[0]) touch = e.originalEvent.changedTouches[0];
 
+            // set page position
             pagePosition = {
                 top: (touch.pageY - rect.top),
                 left: (touch.pageX - rect.left)
             }
 
-            var target = document.elementFromPoint(touch.pageX, touch.pageY);
-            if ($(target).closest('#start').length > 0) {
-                $('#start').html('<img style="width:30px;height:30px;"src="assets/img/pokeball-small.png"/>').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
-                    self._cache.$gameAudio[0].volume = 0.2;
+            // set target
+            target = document.elementFromPoint(touch.pageX, touch.pageY);
+
+            if (self._vars.timer > 0) {
+                // listen on start
+                if ($(target).closest('#start').length > 0) {
                     // remove start element
-                    $('#start').remove();
+                    self._cache.$start.toggleClass('hide', true);
+                    // set volume
+                    self._cache.$gameAudio[0].volume = 0.2;
                     // catch current pokemon
                     self._catchCurrentPokemon();
                     // start timer
                     self._startTimer();
-                });
-            }
-            if ($(target).closest('#pokemon').length > 0) {
-                $('#pokemon').attr('src', 'assets/img/pokeball-small.png').css({ 'width': 30, 'height': 30 }).animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
-                    // remove pokemon element
-                    $('#pokemon').remove();
-                    // catch current pokemon
-                    self._catchCurrentPokemon();
-                });
+                }
+                // listen on pokemon
+                if ($(target).closest('#pokemon').length > 0) {
+                    $('#pokemon').attr('src', 'assets/img/pokeball-small.png').css({ 'width': 30, 'height': 30 }).animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                        // remove pokemon element
+                        $('#pokemon').remove();
+                        // catch current pokemon
+                        self._catchCurrentPokemon();
+                    });
+                }
             }
 
             $(this).append('<img class="pokeball" style="top:' + pagePosition.top + 'px;left:' + pagePosition.left + 'px" src="assets/img/cursor.png" />')
@@ -131,28 +161,38 @@ main.prototype = {
             });
         });
 
+        // listen on play again button in end games modal
+        this._cache.$endGameBtnsPlay.on('touchstart', function (e) {
+            // play again
+            self._platAgain();
+        });
+
     },
     _startApp: function () {
-        var self = this;
+        // show start pokemon
+        this._cache.$start.toggleClass('hide', false);
         // get random pokemon to current pokemon
         this._randomPokemon();
         // add pokemon image to src
-        this._cache.startAnimatePokemon.prop('src', 'assets/img/pokemons/' + this._vars.currentPokemon + '.png');
+        this._cache.$startAnimatePokemon.prop('src', 'assets/img/pokemons/' + this._vars.currentPokemon + '.png');
     },
     _startTimer: function () {
         var self = this;
         // set inertval
         this._vars.timerInterval = setInterval(function () {
-            self._vars.startTime--;
-            // print timer
-            self._cache.$timer.html(Math.floor(self._vars.startTime / 60) + ':' + ('0' + Math.floor(self._vars.startTime % 60)).slice(-2));
             // clear interval
-            if (self._vars.startTime == 0) {
+            if (self._vars.timer <= 0) {
                 self._timeup();
+                return false;
             }
+            self._vars.timer--;
+            // print timer
+            self._cache.$timer.html(Math.floor(self._vars.timer / 60) + ':' + ('0' + Math.floor(self._vars.timer % 60)).slice(-2));
         }, 1000);
     },
     _catchCurrentPokemon: function () {
+        if (this._vars.timer == 0) return false;
+
         // push current pokemon to my pokemons
         this._vars.myPokemons.push(this._vars.currentPokemon);
         // print score
@@ -173,7 +213,7 @@ main.prototype = {
             newq = this._makeNewPosition();
 
         $('#pokemon').animate({ top: newq[0], left: newq[1] }, function () {
-            if (self._vars.startTime > 0) self._animatePokemon();
+            if (self._vars.timer > 0) self._animatePokemon();
         });
     },
     _makeNewPosition: function () {
@@ -186,11 +226,60 @@ main.prototype = {
         return [nh, nw];
     },
     _timeup: function () {
-        $('#pokemon').animate({ opacity: 0 }, function () {
-            $(this).remove();
-        });
-        clearInterval(self._vars.timerInterval);
-        this._cache.$endGameScoresContent.animate({ scrollTop: this._cache.this._cache.$endGameScoresContent.prop("scrollHeight") }, 1500);
+        // remove crrent pokemon
+        $('#pokemon').remove();
+        // stop timer
+        clearInterval(this._vars.timerInterval);
+        this._vars.timerInterval = null;
+        // build my pokemons list
+        this._buildMyPokemonsList();
+        // show modal and pause game
+        this._cache.$endGame.toggleClass('show-modal', true);
+        this._cache.$body.toggleClass('pause', true);
+        // scroll my pokemon to bottom
+        this._cache.$endGameScoresContent.animate({ scrollTop: this._cache.$endGameScoresContent.height() }, 1500);
+        // save best in local storege
+        if (this._vars.bestScore != null) {
+            if (this._vars.bestScore < this._vars.myPokemons.length) {
+                this._vars.bestScore = this._vars.myPokemons.length;
+                this._vars.storage.setItem('best', this._vars.bestScore);
+                this._cache.$bestScore.toggleClass('hide', false);
+                this._cache.$bestScoreNumber.html(this._vars.bestScore);
+            }
+        } else {
+            this._vars.bestScore = this._vars.myPokemons.length;
+            this._vars.storage.setItem('best', this._vars.bestScore);
+            this._cache.$bestScore.toggleClass('hide', false);
+            this._cache.$bestScoreNumber.html(this._vars.bestScore);
+        }
+    },
+    _buildMyPokemonsList: function () {
+        var self = this;
+        // reset my pokemons list
+        if (this._vars.myPokemons.length > 0) this._cache.$endGameScoresContentList.html('');
+        else this._cache.$endGameScoresContentList.toggleClass('hide', true)
+        // print amount my pokemons
+        this._cache.$endGameScoresTitle.html(this._vars.myPokemons.length);
+        // loop on my pokemons list
+        for (var i = 0; i < this._vars.myPokemons.length; i++) {
+            // print pokemon
+            self._cache.$endGameScoresContentList.append('<li><img src="assets/img/pokemons/' + self._vars.myPokemons[i] + '.png"></li>');
+        }
+    },
+    _platAgain: function () {
+        // reset varibles
+        this._vars.currentPokemon = null;
+        this._vars.myPokemons = [];
+        this._vars.timer = this._vars.startTimer;
+        // close all modal and uot from pause mode
+        this._cache.$modal.toggleClass('show-modal', false);
+        this._cache.$body.toggleClass('pause', false);
+        // print timer
+        this._cache.$timer.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
+        // print score
+        this._cache.$score.html(this._vars.myPokemons.length);
+        // build elements start app
+        this._startApp();
     }
 }
 
