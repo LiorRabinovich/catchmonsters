@@ -40,7 +40,7 @@ main.prototype = {
             'wigglytuff'
         ],
         myPokemons: [],
-        startTimer: 2,
+        startTimer: 60,
         timer: 0,
         timerInterval: null,
         bestScore: null,
@@ -57,7 +57,8 @@ main.prototype = {
         this._cache.$startAnimatePokemon = $('#start-animate-pokemon');
         this._cache.$pokeball = $('#pokeball');
         this._cache.$score = $('#score span');
-        this._cache.$timer = $('#timer span');
+        this._cache.$timer = $('#timer');
+        this._cache.$timerClock = $('#timer span');
         this._cache.$gameAudio = $('#game-audio');
         this._cache.$swipeAudio = $('#swipe-audio');
         this._cache.$endGameScoresContent = $("#end-game-scores-content");
@@ -65,7 +66,8 @@ main.prototype = {
         this._cache.$endGame = $('#end-game');
         this._cache.$endGameBtnsPlay = $('#end-game-btns-play');
         this._cache.$modal = $('.modal');
-        this._cache.$endGameScoresTitle = $('#end-game-scores-title span')
+        this._cache.$endGameScoresTitle = $('#end-game-scores-title');
+        this._cache.$endGameScoresTitleSpan = $('#end-game-scores-title span');
         this._cache.$bestScore = $('#best-score');
         this._cache.$bestScoreNumber = $('#best-score span');
     },
@@ -95,7 +97,7 @@ main.prototype = {
         this._startApp();
 
         // print timer
-        this._cache.$timer.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
+        this._cache.$timerClock.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
     },
     _bindEvents: function () {
         var self = this;
@@ -164,7 +166,7 @@ main.prototype = {
         // listen on play again button in end games modal
         this._cache.$endGameBtnsPlay.on('touchstart', function (e) {
             // play again
-            self._platAgain();
+            self._playAgain();
         });
 
     },
@@ -186,8 +188,14 @@ main.prototype = {
                 return false;
             }
             self._vars.timer--;
+            // bold timer
+            if (self._vars.timer <= 5) {
+                self._cache.$timer.toggleClass('bold', true);
+            } else {
+                self._cache.$timer.toggleClass('bold', false);
+            }
             // print timer
-            self._cache.$timer.html(Math.floor(self._vars.timer / 60) + ':' + ('0' + Math.floor(self._vars.timer % 60)).slice(-2));
+            self._cache.$timerClock.html(Math.floor(self._vars.timer / 60) + ':' + ('0' + Math.floor(self._vars.timer % 60)).slice(-2));
         }, 1000);
     },
     _catchCurrentPokemon: function () {
@@ -197,6 +205,13 @@ main.prototype = {
         this._vars.myPokemons.push(this._vars.currentPokemon);
         // print score
         this._cache.$score.html(this._vars.myPokemons.length);
+        // new best
+        if (this._vars.bestScore != null && this._vars.myPokemons.length > this._vars.bestScore) {
+            this._cache.$bestScore.toggleClass('my-best-score', true);
+            this._cache.$bestScoreNumber.html(this._vars.myPokemons.length);
+        } else {
+            this._cache.$bestScore.toggleClass('my-best-score', false);
+        }
         // get random pokemon to current pokemon
         this._randomPokemon();
         // print new pokemon element in game screen
@@ -239,12 +254,19 @@ main.prototype = {
         // save best in local storege
         if (this._vars.bestScore != null) {
             if (this._vars.bestScore < this._vars.myPokemons.length) {
+                // print new best
+                this._cache.$endGameScoresTitle.toggleClass('best', true);
                 this._vars.bestScore = this._vars.myPokemons.length;
                 this._vars.storage.setItem('best', this._vars.bestScore);
                 this._cache.$bestScore.toggleClass('hide', false);
                 this._cache.$bestScoreNumber.html(this._vars.bestScore);
+            } else {
+                // print new best
+                this._cache.$endGameScoresTitle.toggleClass('best', false);
             }
         } else {
+            // print new best
+            this._cache.$endGameScoresTitle.toggleClass('best', true);
             this._vars.bestScore = this._vars.myPokemons.length;
             this._vars.storage.setItem('best', this._vars.bestScore);
             this._cache.$bestScore.toggleClass('hide', false);
@@ -257,7 +279,7 @@ main.prototype = {
         if (this._vars.myPokemons.length > 0) this._cache.$endGameScoresContentList.html('');
         else this._cache.$endGameScoresContentList.toggleClass('hide', true)
         // print amount my pokemons
-        this._cache.$endGameScoresTitle.html(this._vars.myPokemons.length);
+        this._cache.$endGameScoresTitleSpan.html(this._vars.myPokemons.length);
         // loop on my pokemons list
         for (var i = 0; i < this._vars.myPokemons.length; i++) {
             // print pokemon
@@ -265,11 +287,10 @@ main.prototype = {
         }
         // scroll my pokemon to bottom
         setTimeout(function () {
-            console.log(self._cache.$endGameScoresContent[0].scrollHeight);
-            self._cache.$endGameScoresContent.animate({ scrollTop: self._cache.$endGameScoresContent[0].scrollHeight }, 1500);
-        }, 2000);
+            self._cache.$endGameScoresContent.animate({ scrollTop: self._cache.$endGameScoresContent[0].scrollHeight }, 1000);
+        });
     },
-    _platAgain: function () {
+    _playAgain: function () {
         // reset varibles
         this._vars.currentPokemon = null;
         this._vars.myPokemons = [];
@@ -278,9 +299,13 @@ main.prototype = {
         this._cache.$modal.toggleClass('show-modal', false);
         this._cache.$body.toggleClass('pause', false);
         // print timer
-        this._cache.$timer.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
+        this._cache.$timerClock.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
+        // remove bold from timer
+        this._cache.$timer.toggleClass('bold', false);
         // print score
         this._cache.$score.html(this._vars.myPokemons.length);
+        // remove class my best score
+        this._cache.$bestScore.toggleClass('my-best-score', false);
         // build elements start app
         this._startApp();
     }
