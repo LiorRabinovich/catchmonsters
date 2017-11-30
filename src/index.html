@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CathPokemon</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+
+<body>
+
+    <div id="game-screen">
+        <div id="scores">
+            <div id="score">
+                <span>0</span>
+            </div>
+            <div id="best-score" class="hide">
+                Best:
+                <span></span>
+            </div>
+        </div>
+        <div id="timer">
+            <span></span>
+        </div>
+        <div id="start">
+            <div id="start-animate">
+                <div id="start-animate-pokemon"></div>
+                <div id="start-animate-cursor"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="end-game" class="modal">
+        <div id="end-game-title">
+            <span>TIME UP</span>
+        </div>
+        <div id="end-game-scores">
+            <div id="end-game-container">
+                <div id="end-game-scores-title">POKEMONS:
+                    <span></span>
+                </div>
+                <div id="end-game-scores-content">
+                    <ul></ul>
+                </div>
+            </div>
+        </div>
+        <div id="end-game-btns">
+            <button id="end-game-btns-play">
+                <div class="icon-play"></div>
+            </button>
+        </div>
+    </div>
+
+    <audio id="game-audio">
+        <source src="assets/sounds/menu.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="swipe-audio">
+        <source src="assets/sounds/swipe.mp3" type="audio/mpeg">
+    </audio>
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>

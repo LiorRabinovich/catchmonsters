@@ -5,9 +5,9 @@ require 'compass/import-once/activate'
 http_path = "/"
 css_dir = "www/assets/css"
 sass_dir = "src/sass"
-images_dir = "src/img"
-generated_images_dir = "www/assets/img"
-http_generated_images_path = "../img"
+images_dir = "src/sprites"
+generated_images_dir = "www/assets/sprites"
+http_generated_images_path = "../sprites"
 javascripts_dir = "src/js"
 
 # You can select your preferred output style here (can be overridden via the command line):

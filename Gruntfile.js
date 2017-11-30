@@ -22,6 +22,13 @@ module.exports = function (grunt) {
                 options: {
                     spawn: false,
                 }
+            },
+            html: {
+                files: ['src/index.html'],
+                tasks: ['htmlmin'],
+                options: {
+                    spawn: false,
+                }
             }
         },
         compass: {
@@ -51,6 +58,11 @@ module.exports = function (grunt) {
             main: {
                 files: [{
                     expand: true,
+                    cwd: 'src/img',
+                    src: ['**'],
+                    dest: 'www/assets/img',
+                }, {
+                    expand: true,
                     cwd: 'src/sounds',
                     src: ['**'],
                     dest: 'www/assets/sounds',
@@ -61,13 +73,25 @@ module.exports = function (grunt) {
                     dest: 'www/assets/fonts',
                 }]
             }
-        }
+        },
+        htmlmin: {
+            dist: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true
+                },
+                files: {
+                    'www/index.html': 'src/index.html'
+                }
+            }
+        },
     });
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-    grunt.registerTask('default', ['compass', 'uglify', 'copy', 'watch']);
+    grunt.registerTask('default', ['compass', 'uglify', 'copy', 'htmlmin', 'watch']);
 };

@@ -2,9 +2,6 @@
 @import "_fontello";
 @import "compass/css3";
 @import "compass/utilities/sprites";
-$global-sprite-spacing: 5px;
-@import "global-sprite/*.png";
-@include all-global-sprite-sprites(true);
 @import "pokemons-sprite/*.png";
 @include all-pokemons-sprite-sprites(true);
 
@@ -63,17 +60,15 @@ body {
 }
 
 body {
+    background: url('../img/background.png');
     direction: ltr;
     font-family: 'Russo One', sans-serif;
     margin: 0;
-    background-position: center top;
-    background-size: cover;
     position: relative;
     color: black;
     -webkit-text-fill-color: white;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
-    @extend .global-sprite-background;
 }
 
 body.pause #game-screen * {
@@ -86,9 +81,10 @@ body.pause #game-screen * {
 button {
     font-size: 60px;
     border: 0;
-    background-color: none;
-    @extend .global-sprite-pokeball;
-    @include resize-sprite($global-sprite-sprites, 'pokeball', 70);
+    background: url('../img/pokeball.png');
+    height: 80px;
+    width: 80px;
+    background-size: cover;
     animation: buttonAnimate 1s ease-in-out infinite alternate;
     position: relative;
     color: black;
@@ -120,19 +116,24 @@ button {
 
 #score {
     line-height: 20px;
+    text-align: left;
 }
 
 #score::before {
-    @extend .global-sprite-pokeball;
-    @include resize-sprite($global-sprite-sprites, 'pokeball', 15);
+    background: url('../img/pokeball.png');
+    height: 20px;
+    width: 20px;
+    background-size: cover;
     content: " ";
     display: inline-block;
     vertical-align: middle;
+    margin-right: 5px;
 }
 
 #score span {
     display: inline-block;
     vertical-align: middle;
+    padding-top: 3px;
 }
 
 #best-score {
@@ -172,8 +173,10 @@ button {
     top: 0;
     left: 0;
     z-index: 999;
-    @extend .global-sprite-pokeball;
-    @include resize-sprite($global-sprite-sprites, 'pokeball', 12);
+    background: url('../img/pokeball.png');
+    background-size: cover;
+    height: 15px;
+    width: 15px;
 }
 
 #start {
@@ -221,7 +224,9 @@ button {
     position: absolute;
     opacity: 0.8;
     animation: startAnimateCursor 1s infinite;
-    @extend .global-sprite-start-cursor;
+    background: url('../img/start-cursor.png');
+    height: 32px;
+    width: 32px;
 }
 
 
@@ -338,8 +343,10 @@ button {
 }
 
 .catch-pokemon {
-    @extend .global-sprite-pokeball;
-    @include resize-sprite($global-sprite-sprites, 'pokeball', 20);
+    background: url('../img/pokeball.png');
+    height: 30px;
+    width: 30px;
+    background-size: cover;
 }
 
 
@@ -347,11 +354,13 @@ button {
 
 @keyframes buttonAnimate {
     0% {
-        @include resize-sprite($global-sprite-sprites, 'pokeball', 60);
+        height: 70px;
+        width: 70px;
         font-size: 50px;
     }
     100% {
-        @include resize-sprite($global-sprite-sprites, 'pokeball', 70);
+        height: 80px;
+        width: 80px;
         font-size: 60px;
     }
 }
