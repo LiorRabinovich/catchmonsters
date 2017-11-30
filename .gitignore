@@ -79,7 +79,7 @@ package-lock.json
 hooks
 
 # www
-www/*
+www
 
 #info
 info.txt

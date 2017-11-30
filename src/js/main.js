@@ -40,7 +40,7 @@ main.prototype = {
             'wigglytuff'
         ],
         myMonsters: [],
-        startTimer: 2,
+        startTimer: 60,
         timer: 0,
         timerInterval: null,
         bestScore: null,
