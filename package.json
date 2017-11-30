@@ -1,12 +1,35 @@
 {
-    "name": "catchmonsters",
-    "displayName": "CatchMonsters",
-    "version": "1.0.0",
-    "description": "Let's catch monsters",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+  "name": "catchmonsters",
+  "displayName": "CatchMonsters",
+  "version": "1.0.0",
+  "description": "Let's catch monsters",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Lior Rabinovich",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "cordova": "^7.1.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-compass": "^1.1.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-htmlmin": "^2.4.0",
+    "grunt-contrib-uglify": "^3.2.1",
+    "grunt-contrib-watch": "^1.0.0"
+  },
+  "dependencies": {
+    "cordova-android": "^6.3.0",
+    "cordova-browser": "^5.0.1",
+    "cordova-plugin-whitelist": "^1.3.3"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {}
     },
-    "author": "Lior Rabinovich",
-    "license": "Apache-2.0"
+    "platforms": [
+      "browser",
+      "android"
+    ]
+  }
 }

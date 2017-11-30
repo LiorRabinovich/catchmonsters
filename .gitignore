@@ -1,36 +1,15 @@
 # Mac
 .DS_Store
 
-# iOS
-platforms/ios/build/
-platforms/ios/www/
-platforms/ios/cordova/console.log
-*.xcuserdatad
-
-# android
-platforms/android/assets/www
-platforms/android/bin
-platforms/android/gen
-platforms/android/local.properties
-platforms/android/ant-build
-platforms/android/ant-gen
-platforms/android/CordovaLib/ant-build
-platforms/android/CordovaLib/ant-gen
-platforms/android/CordovaLib/bin
-platforms/android/CordovaLib/gen
-platforms/android/CordovaLib/local.properties
-
-# wp8
-platforms/wp8/bin
-platforms/wp8/obj
-platforms/wp8/www
-platforms/wp8/.staging
-platforms/wp8/*.suo
-platforms/wp8/*.csproj.user
+# platforms
+platforms
 
 # res
 res
 resources/signing
+
+#plugins
+plugins
 
 # Logs
 logs
@@ -75,6 +54,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+package-lock.json
 
 # Optional eslint cache
 .eslintcache
@@ -99,4 +79,7 @@ typings/
 hooks
 
 # www
-www
+www/*
+
+#info
+info.txt
