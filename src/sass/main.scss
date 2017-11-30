@@ -2,8 +2,8 @@
 @import "_fontello";
 @import "compass/css3";
 @import "compass/utilities/sprites";
-@import "pokemons-sprite/*.png";
-@include all-pokemons-sprite-sprites(true);
+@import "monsters-sprite/*.png";
+@include all-monsters-sprite-sprites(true);
 
 /* cyrillic */
 
@@ -107,7 +107,7 @@ button {
     font-size: 20px;
 }
 
-#pokemon {
+#monster {
     position: absolute;
 }
 
@@ -154,17 +154,18 @@ button {
     position: absolute;
     top: 7px;
     right: 7px;
-    &.bold {
-        color: black;
-        -webkit-text-fill-color: #d60809;
-        -webkit-text-stroke-width: 1px;
-        -webkit-text-stroke-color: black;
-        animation-name: pulse_animation;
-        animation-duration: 500ms;
-        transform-origin: 70% 70%;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
-    }
+}
+
+#timer.bold {
+    color: black;
+    -webkit-text-fill-color: #d60809;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    animation-name: pulse_animation;
+    animation-duration: 500ms;
+    transform-origin: 70% 70%;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
 }
 
 .hide {
@@ -210,7 +211,7 @@ button {
     opacity: 0.8;
 }
 
-#start-animate-pokemon {
+#start-animate-monster {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -345,11 +346,21 @@ button {
     }
 }
 
-.catch-pokemon {
+.catch-monster {
     background: url('../img/pokeball.png');
     height: 30px;
     width: 30px;
     background-size: cover;
+}
+
+#pause {
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+    font-size: 16px;
+    background: rgba(0, 0, 0, .8);
+    border-radius: 50%;
+    padding: 3px;
 }
 
 

@@ -8,8 +8,8 @@ var main = function () {
 
 main.prototype = {
     _vars: {
-        currentPokemon: null,
-        pokemons: [
+        currentMonster: null,
+        monsters: [
             'alakazam',
             'arbok',
             'beedrill',
@@ -39,7 +39,7 @@ main.prototype = {
             'weezing',
             'wigglytuff'
         ],
-        myPokemons: [],
+        myMonsters: [],
         startTimer: 2,
         timer: 0,
         timerInterval: null,
@@ -54,7 +54,7 @@ main.prototype = {
         this._cache.$body = $('body');
         this._cache.$gameScreen = $('#game-screen');
         this._cache.$start = $('#start');
-        this._cache.$startAnimatePokemon = $('#start-animate-pokemon');
+        this._cache.$startAnimateMonster = $('#start-animate-monster');
         this._cache.$pokeball = $('#pokeball');
         this._cache.$score = $('#score span');
         this._cache.$timer = $('#timer');
@@ -70,6 +70,7 @@ main.prototype = {
         this._cache.$endGameScoresTitleSpan = $('#end-game-scores-title span');
         this._cache.$bestScore = $('#best-score');
         this._cache.$bestScoreNumber = $('#best-score span');
+        this._cache.$pause = $('#pause');
     },
     _buildElements: function () {
         // start play game audio 
@@ -139,18 +140,18 @@ main.prototype = {
                     self._cache.$start.toggleClass('hide', true);
                     // set volume
                     self._cache.$gameAudio[0].volume = 0.2;
-                    // catch current pokemon
-                    self._catchCurrentPokemon();
+                    // catch current monster
+                    self._catchCurrentMonster();
                     // start timer
                     self._startTimer();
                 }
-                // listen on pokemon
-                if ($(target).closest('#pokemon').length > 0) {
-                    $('#pokemon').attr('class', 'catch-pokemon').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
-                        // remove pokemon element
-                        $('#pokemon').remove();
-                        // catch current pokemon
-                        self._catchCurrentPokemon();
+                // listen on monster
+                if ($(target).closest('#monster').length > 0) {
+                    $('#monster').attr('class', 'catch-monster').animate({ width: 0, height: 0, top: 0, left: 0, opacity: 0 }, function () {
+                        // remove monster element
+                        $('#monster').remove();
+                        // catch current monster
+                        self._catchCurrentMonster();
                     });
                 }
             }
@@ -169,14 +170,19 @@ main.prototype = {
             self._playAgain();
         });
 
+        this._cache.$pause.on('touchstart', function (e) {
+            // play again
+            self._playAgain();
+        });
+
     },
     _startApp: function () {
-        // show start pokemon
+        // show start monster
         this._cache.$start.toggleClass('hide', false);
-        // get random pokemon to current pokemon
-        this._randomPokemon();
-        // add pokemon image to src
-        this._cache.$startAnimatePokemon.addClass('pokemons-sprite-' + this._vars.currentPokemon);
+        // get random monster to current monster
+        this._randomMonster();
+        // add monster image to src
+        this._cache.$startAnimateMonster.addClass('monsters-sprite-' + this._vars.currentMonster);
     },
     _startTimer: function () {
         var self = this;
@@ -198,41 +204,41 @@ main.prototype = {
             self._cache.$timerClock.html(Math.floor(self._vars.timer / 60) + ':' + ('0' + Math.floor(self._vars.timer % 60)).slice(-2));
         }, 1000);
     },
-    _catchCurrentPokemon: function () {
+    _catchCurrentMonster: function () {
         if (this._vars.timer == 0) return false;
 
-        // push current pokemon to my pokemons
-        this._vars.myPokemons.push(this._vars.currentPokemon);
+        // push current monster to my monsters
+        this._vars.myMonsters.push(this._vars.currentMonster);
         // print score
-        this._cache.$score.html(this._vars.myPokemons.length);
+        this._cache.$score.html(this._vars.myMonsters.length);
         // new best
-        if (this._vars.bestScore != null && this._vars.myPokemons.length > this._vars.bestScore) {
+        if (this._vars.bestScore != null && this._vars.myMonsters.length > this._vars.bestScore) {
             this._cache.$bestScore.toggleClass('my-best-score', true);
-            this._cache.$bestScoreNumber.html(this._vars.myPokemons.length);
+            this._cache.$bestScoreNumber.html(this._vars.myMonsters.length);
         } else {
             this._cache.$bestScore.toggleClass('my-best-score', false);
         }
-        // get random pokemon to current pokemon
-        this._randomPokemon();
-        // print new pokemon element in game screen
+        // get random monster to current monster
+        this._randomMonster();
+        // print new monster element in game screen
         var newq = this._makeNewPosition();
-        this._cache.$gameScreen.append('<div id="pokemon" class="pokemons-sprite-' + this._vars.currentPokemon + '" style="top: ' + newq[0] + 'px;left: ' + newq[1] + 'px;"></div>');
-        // animate pokemon
-        this._animatePokemon();
+        this._cache.$gameScreen.append('<div id="monster" class="monsters-sprite-' + this._vars.currentMonster + '" style="top: ' + newq[0] + 'px;left: ' + newq[1] + 'px;"></div>');
+        // animate monster
+        this._animateMonster();
     },
-    _randomPokemon: function () {
-        this._vars.currentPokemon = this._vars.pokemons[(Math.floor(Math.random() * ((this._vars.pokemons.length - 1) - 0)) + 0)];
+    _randomMonster: function () {
+        this._vars.currentMonster = this._vars.monsters[(Math.floor(Math.random() * ((this._vars.monsters.length - 1) - 0)) + 0)];
     },
-    _animatePokemon: function () {
+    _animateMonster: function () {
         var self = this,
             newq = this._makeNewPosition();
 
-        $('#pokemon').animate({ top: newq[0], left: newq[1] }, function () {
-            if (self._vars.timer > 0) self._animatePokemon();
+        $('#monster').animate({ top: newq[0], left: newq[1] }, function () {
+            if (self._vars.timer > 0) self._animateMonster();
         });
     },
     _makeNewPosition: function () {
-        var $element = $('#pokemon'),
+        var $element = $('#monster'),
             h = this._cache.$gameScreen.height() - (($element.length > 0 ? $element.height() : 100)),
             w = this._cache.$gameScreen.width() - (($element.length > 0 ? $element.width() : 100)),
             nh = Math.floor(Math.random() * h),
@@ -240,23 +246,34 @@ main.prototype = {
 
         return [nh, nw];
     },
+    _closeAllModal: function () {
+        // close all modal and uot from pause mode
+        this._cache.$modal.toggleClass('show-modal', false);
+        this._cache.$body.toggleClass('pause', false);
+    },
+    _openModal: function ($modal) {
+        // close all modal and uot from pause mode
+        this._closeAllModal();
+        // show modal and pause game
+        $modal.toggleClass('show-modal', true);
+        this._cache.$body.toggleClass('pause', true);
+    },
     _timeup: function () {
-        // remove crrent pokemon
-        $('#pokemon').remove();
+        // remove crrent monster
+        $('#monster').remove();
         // stop timer
         clearInterval(this._vars.timerInterval);
         this._vars.timerInterval = null;
-        // build my pokemons list
-        this._buildMyPokemonsList();
-        // show modal and pause game
-        this._cache.$endGame.toggleClass('show-modal', true);
-        this._cache.$body.toggleClass('pause', true);
+        // build my monsters list
+        this._buildMyMonstersList();
+        // show modal end game and pause game
+        this._openModal(this._cache.$endGame);
         // save best in local storege
         if (this._vars.bestScore != null) {
-            if (this._vars.bestScore < this._vars.myPokemons.length) {
+            if (this._vars.bestScore < this._vars.myMonsters.length) {
                 // print new best
                 this._cache.$endGameScoresTitle.toggleClass('best', true);
-                this._vars.bestScore = this._vars.myPokemons.length;
+                this._vars.bestScore = this._vars.myMonsters.length;
                 this._vars.storage.setItem('best', this._vars.bestScore);
                 this._cache.$bestScore.toggleClass('hide', false);
                 this._cache.$bestScoreNumber.html(this._vars.bestScore);
@@ -267,43 +284,47 @@ main.prototype = {
         } else {
             // print new best
             this._cache.$endGameScoresTitle.toggleClass('best', true);
-            this._vars.bestScore = this._vars.myPokemons.length;
+            this._vars.bestScore = this._vars.myMonsters.length;
             this._vars.storage.setItem('best', this._vars.bestScore);
             this._cache.$bestScore.toggleClass('hide', false);
             this._cache.$bestScoreNumber.html(this._vars.bestScore);
         }
     },
-    _buildMyPokemonsList: function () {
+    _buildMyMonstersList: function () {
         var self = this;
-        // reset my pokemons list
-        if (this._vars.myPokemons.length > 0) this._cache.$endGameScoresContentList.html('');
+        // reset my monsters list
+        if (this._vars.myMonsters.length > 0) this._cache.$endGameScoresContentList.html('');
         else this._cache.$endGameScoresContentList.toggleClass('hide', true)
-        // print amount my pokemons
-        this._cache.$endGameScoresTitleSpan.html(this._vars.myPokemons.length);
-        // loop on my pokemons list
-        for (var i = 0; i < this._vars.myPokemons.length; i++) {
-            // print pokemon
-            self._cache.$endGameScoresContentList.append('<li><div class="pokemons-sprite-' + self._vars.myPokemons[i] + '"></div></li>');
+        // print amount my monsters
+        this._cache.$endGameScoresTitleSpan.html(this._vars.myMonsters.length);
+        // loop on my monsters list
+        for (var i = 0; i < this._vars.myMonsters.length; i++) {
+            // print monster
+            self._cache.$endGameScoresContentList.append('<li><div class="monsters-sprite-' + self._vars.myMonsters[i] + '"></div></li>');
         }
-        // scroll my pokemon to bottom
+        // scroll my monster to bottom
         setTimeout(function () {
             self._cache.$endGameScoresContent.animate({ scrollTop: self._cache.$endGameScoresContent[0].scrollHeight }, 1000);
         });
     },
     _playAgain: function () {
+        // remove crrent monster
+        $('#monster').remove();
+        // stop timer
+        clearInterval(this._vars.timerInterval);
+        this._vars.timerInterval = null;
         // reset varibles
-        this._vars.currentPokemon = null;
-        this._vars.myPokemons = [];
+        this._vars.currentMonster = null;
+        this._vars.myMonsters = [];
         this._vars.timer = this._vars.startTimer;
         // close all modal and uot from pause mode
-        this._cache.$modal.toggleClass('show-modal', false);
-        this._cache.$body.toggleClass('pause', false);
+        this._closeAllModal();
         // print timer
         this._cache.$timerClock.html(Math.floor(this._vars.timer / 60) + ':' + ('0' + Math.floor(this._vars.timer % 60)).slice(-2));
         // remove bold from timer
         this._cache.$timer.toggleClass('bold', false);
         // print score
-        this._cache.$score.html(this._vars.myPokemons.length);
+        this._cache.$score.html(this._vars.myMonsters.length);
         // remove class my best score
         this._cache.$bestScore.toggleClass('my-best-score', false);
         // build elements start app

@@ -1,4 +1,4 @@
-# catchpokemon
+# catchmonster
 
 ## How to install
 * run `npm install`
