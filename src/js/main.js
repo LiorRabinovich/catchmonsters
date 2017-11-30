@@ -40,7 +40,7 @@ main.prototype = {
             'wigglytuff'
         ],
         myPokemons: [],
-        startTimer: 60,
+        startTimer: 2,
         timer: 0,
         timerInterval: null,
         bestScore: null,
