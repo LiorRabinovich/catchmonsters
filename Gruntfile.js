@@ -93,5 +93,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
 
-    grunt.registerTask('default', ['compass', 'uglify', 'copy', 'htmlmin', 'watch']);
+    grunt.registerTask('default', ['compass', 'uglify', 'copy', 'htmlmin']);
+    grunt.registerTask('watch', ['compass', 'uglify', 'copy', 'htmlmin', 'watch']);
 };

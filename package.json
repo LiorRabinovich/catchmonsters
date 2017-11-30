@@ -5,7 +5,7 @@
   "description": "Let's catch monsters",
   "main": "index.js",
   "scripts": {
-    "start": "cordova prepare"
+    "start": "grunt cordova prepare"
   },
   "author": "Lior Rabinovich",
   "license": "Apache-2.0",
