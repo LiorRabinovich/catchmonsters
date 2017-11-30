@@ -94,3 +94,6 @@ typings/
 # sass
 /.sass-cache/*
 *.css.map
+
+# hooks
+hooks
