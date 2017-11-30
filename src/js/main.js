@@ -44,7 +44,8 @@ main.prototype = {
         timer: 0,
         timerInterval: null,
         bestScore: null,
-        storage: window.localStorage
+        storage: window.localStorage,
+        pauseMode: false
     },
     _cache: {
         $windows: $(window),
@@ -61,16 +62,25 @@ main.prototype = {
         this._cache.$timerClock = $('#timer span');
         this._cache.$gameAudio = $('#game-audio');
         this._cache.$swipeAudio = $('#swipe-audio');
-        this._cache.$endGameScoresContent = $("#end-game-scores-content");
-        this._cache.$endGameScoresContentList = $("#end-game-scores-content ul");
-        this._cache.$endGame = $('#end-game');
-        this._cache.$endGameBtnsPlay = $('#end-game-btns-play');
+        // score component
+        this._cache.$scoresComponentContent = $(".scores-component-content");
+        this._cache.$scoresComponentContentList = $(".scores-component-content ul");
+        this._cache.$scoresComponentTitle = $('.scores-component-title');
+        this._cache.$scoresComponentTitleSpan = $('.scores-component-title span');
+        // modal
         this._cache.$modal = $('.modal');
-        this._cache.$endGameScoresTitle = $('#end-game-scores-title');
-        this._cache.$endGameScoresTitleSpan = $('#end-game-scores-title span');
+        // pause modal
+        this._cache.$pauseModal = $('#pause-modal');
+        this._cache.$pauseModalBtnsCancel = $('#pause-modal-btns-cancel');
+        this._cache.$pauseModalBtnsSounds = $('#pause-modal-btns-sounds');
+        // end game modal
+        this._cache.$endGame = $('#end-game');
         this._cache.$bestScore = $('#best-score');
         this._cache.$bestScoreNumber = $('#best-score span');
+        // pause button
         this._cache.$pause = $('#pause');
+        // play again buttons
+        this._cache.$playAgain = $('.play-again');
     },
     _buildElements: function () {
         // start play game audio 
@@ -84,15 +94,8 @@ main.prototype = {
         // set swipe audio volume
         this._cache.$swipeAudio[0].volume = 0.6;
 
-        // set and print best
-        var bestLocalStorege = this._vars.storage.getItem('best');
-        if (bestLocalStorege == null) {
-            this._cache.$bestScore.toggleClass('hide', true);
-        } else {
-            this._vars.bestScore = bestLocalStorege;
-            this._cache.$bestScore.toggleClass('hide', false);
-            this._cache.$bestScoreNumber.html(this._vars.bestScore);
-        }
+        // get and print best
+        this._getAndPrintBestScore();
 
         // build elements start app
         this._startApp();
@@ -165,16 +168,44 @@ main.prototype = {
         });
 
         // listen on play again button in end games modal
-        this._cache.$endGameBtnsPlay.on('touchstart', function (e) {
+        this._cache.$playAgain.on('touchstart', function (e) {
             // play again
             self._playAgain();
         });
 
         this._cache.$pause.on('touchstart', function (e) {
-            // play again
-            self._playAgain();
+            // build my monsters list
+            self._buildMyMonstersList();
+            // show modal pause modal and pause game
+            self._openModal(self._cache.$pauseModal);
         });
 
+        this._cache.$pauseModalBtnsCancel.on('touchstart', function (e) {
+            // close all modal
+            self._closeAllModal();
+        });
+
+        this._cache.$pauseModalBtnsSounds.on('touchstart', function (e) {
+            // muted all audio
+            self._mutedSounds();
+        });
+
+    },
+    _mutedSounds: function () {
+        // muted all audio
+        this._cache.$gameAudio.data('muted', true);
+        this._cache.$swipeAudio.data('muted', true);
+    },
+    _getAndPrintBestScore: function () {
+        // get and print best
+        var bestLocalStorege = this._vars.storage.getItem('best');
+        if (bestLocalStorege == null) {
+            this._cache.$bestScore.toggleClass('hide', true);
+        } else {
+            this._vars.bestScore = bestLocalStorege;
+            this._cache.$bestScore.toggleClass('hide', false);
+            this._cache.$bestScoreNumber.html(this._vars.bestScore);
+        }
     },
     _startApp: function () {
         // show start monster
@@ -193,7 +224,7 @@ main.prototype = {
                 self._timeup();
                 return false;
             }
-            self._vars.timer--;
+            if (self._vars.pauseMode == false) self._vars.timer--;
             // bold timer
             if (self._vars.timer <= 5) {
                 self._cache.$timer.toggleClass('bold', true);
@@ -234,7 +265,7 @@ main.prototype = {
             newq = this._makeNewPosition();
 
         $('#monster').animate({ top: newq[0], left: newq[1] }, function () {
-            if (self._vars.timer > 0) self._animateMonster();
+            if (self._vars.timer > 0 && self._vars.pauseMode == false) self._animateMonster();
         });
     },
     _makeNewPosition: function () {
@@ -250,6 +281,7 @@ main.prototype = {
         // close all modal and uot from pause mode
         this._cache.$modal.toggleClass('show-modal', false);
         this._cache.$body.toggleClass('pause', false);
+        this._vars.pauseMode = false;
     },
     _openModal: function ($modal) {
         // close all modal and uot from pause mode
@@ -257,6 +289,7 @@ main.prototype = {
         // show modal and pause game
         $modal.toggleClass('show-modal', true);
         this._cache.$body.toggleClass('pause', true);
+        this._vars.pauseMode = true;
     },
     _timeup: function () {
         // remove crrent monster
@@ -272,18 +305,18 @@ main.prototype = {
         if (this._vars.bestScore != null) {
             if (this._vars.bestScore < this._vars.myMonsters.length) {
                 // print new best
-                this._cache.$endGameScoresTitle.toggleClass('best', true);
+                this._cache.$scoresComponentTitle.toggleClass('best', true);
                 this._vars.bestScore = this._vars.myMonsters.length;
                 this._vars.storage.setItem('best', this._vars.bestScore);
                 this._cache.$bestScore.toggleClass('hide', false);
                 this._cache.$bestScoreNumber.html(this._vars.bestScore);
             } else {
                 // print new best
-                this._cache.$endGameScoresTitle.toggleClass('best', false);
+                this._cache.$scoresComponentTitle.toggleClass('best', false);
             }
         } else {
             // print new best
-            this._cache.$endGameScoresTitle.toggleClass('best', true);
+            this._cache.$scoresComponentTitle.toggleClass('best', true);
             this._vars.bestScore = this._vars.myMonsters.length;
             this._vars.storage.setItem('best', this._vars.bestScore);
             this._cache.$bestScore.toggleClass('hide', false);
@@ -293,18 +326,18 @@ main.prototype = {
     _buildMyMonstersList: function () {
         var self = this;
         // reset my monsters list
-        if (this._vars.myMonsters.length > 0) this._cache.$endGameScoresContentList.html('');
-        else this._cache.$endGameScoresContentList.toggleClass('hide', true)
+        if (this._vars.myMonsters.length > 0) this._cache.$scoresComponentContentList.html('');
+        else this._cache.$scoresComponentContentList.toggleClass('hide', true)
         // print amount my monsters
-        this._cache.$endGameScoresTitleSpan.html(this._vars.myMonsters.length);
+        this._cache.$scoresComponentTitleSpan.html(this._vars.myMonsters.length);
         // loop on my monsters list
         for (var i = 0; i < this._vars.myMonsters.length; i++) {
             // print monster
-            self._cache.$endGameScoresContentList.append('<li><div class="monsters-sprite-' + self._vars.myMonsters[i] + '"></div></li>');
+            self._cache.$scoresComponentContentList.append('<li><div class="monsters-sprite-' + self._vars.myMonsters[i] + '"></div></li>');
         }
         // scroll my monster to bottom
         setTimeout(function () {
-            self._cache.$endGameScoresContent.animate({ scrollTop: self._cache.$endGameScoresContent[0].scrollHeight }, 1000);
+            self._cache.$scoresComponentContent.animate({ scrollTop: self._cache.$scoresComponentContent[0].scrollHeight }, 1000);
         });
     },
     _playAgain: function () {
@@ -325,6 +358,8 @@ main.prototype = {
         this._cache.$timer.toggleClass('bold', false);
         // print score
         this._cache.$score.html(this._vars.myMonsters.length);
+        // get and print best
+        this._getAndPrintBestScore();
         // remove class my best score
         this._cache.$bestScore.toggleClass('my-best-score', false);
         // build elements start app
@@ -334,5 +369,4 @@ main.prototype = {
 
 $(function () {
     var mainClass = new main();
-
 });

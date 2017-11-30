@@ -1,10 +1,10 @@
-# catchmonster
+# Catch Monster
 
 ## How to install
 * run `npm install`
 * run `npm start` or `grunt && cordova prepare`
 
-## grunt
+## Grunt
 * run `grunt watcher` to watch on src directory and output to assets directory
 
 ## Run in Browser
