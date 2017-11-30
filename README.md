@@ -2,6 +2,7 @@
 
 ## How to install
 * run `npm install`
+* run `cordova compile`
 * run `grunt`
 
 ## grunt
