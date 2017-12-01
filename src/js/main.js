@@ -71,7 +71,7 @@ main.prototype = {
         this._cache.$modal = $('.modal');
         // pause modal
         this._cache.$pauseModal = $('#pause-modal');
-        this._cache.$pauseModalBtnsCancel = $('#pause-modal-btns-cancel');
+        this._cache.$pauseModalBtnsContinue = $('#pause-modal-btns-continue');
         this._cache.$pauseModalBtnsSounds = $('#pause-modal-btns-sounds');
         // end game modal
         this._cache.$endGame = $('#end-game');
@@ -180,21 +180,25 @@ main.prototype = {
             self._openModal(self._cache.$pauseModal);
         });
 
-        this._cache.$pauseModalBtnsCancel.on('touchstart', function (e) {
+        this._cache.$pauseModalBtnsContinue.on('touchstart', function (e) {
             // close all modal
             self._closeAllModal();
+            // animate monster
+            self._animateMonster();
         });
 
         this._cache.$pauseModalBtnsSounds.on('touchstart', function (e) {
+            var action = !self._cache.$gameAudio[0].muted;
             // muted all audio
-            self._mutedSounds();
+            self._toggleMutedSounds(action);
+            // toggle class muted
+            $(this).toggleClass('muted', action);
         });
 
     },
-    _mutedSounds: function () {
-        // muted all audio
-        this._cache.$gameAudio.data('muted', true);
-        this._cache.$swipeAudio.data('muted', true);
+    _toggleMutedSounds: function (action) {
+        this._cache.$gameAudio[0].muted = (action ? action : !this._cache.$gameAudio[0].muted);
+        this._cache.$swipeAudio[0].muted = (action ? action : !this._cache.$swipeAudio[0].muted);
     },
     _getAndPrintBestScore: function () {
         // get and print best
@@ -327,7 +331,7 @@ main.prototype = {
         var self = this;
         // reset my monsters list
         if (this._vars.myMonsters.length > 0) this._cache.$scoresComponentContentList.html('');
-        else this._cache.$scoresComponentContentList.toggleClass('hide', true)
+        else this._cache.$scoresComponentContent.toggleClass('hide', true)
         // print amount my monsters
         this._cache.$scoresComponentTitleSpan.html(this._vars.myMonsters.length);
         // loop on my monsters list

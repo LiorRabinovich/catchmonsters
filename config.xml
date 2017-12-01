@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.catchmonsters" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CatchMonsters</name>
+    <name>Catch Monsters</name>
     <description>
         Let's catch monsters
     </description>
@@ -22,6 +22,7 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+    <icon src="res/icon.png" />
     <preference name="orientation" value="landscape" />
     <preference name="KeepRunning" value="true" />
     <engine name="browser" spec="5.0.1" />

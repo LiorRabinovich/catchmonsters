@@ -82,7 +82,7 @@ body.pause #game-screen * {
 /* button */
 
 button {
-    font-size: 60px;
+    font-size: 45px;
     border: 0;
     background: url('../img/pokeball.png');
     height: 80px;
@@ -90,12 +90,32 @@ button {
     background-size: cover;
     animation: buttonAnimate 1s ease-in-out infinite alternate;
     position: relative;
-    color: black;
-    -webkit-text-fill-color: #ffe600;
-    -webkit-text-stroke-width: 1px;
-    -webkit-text-stroke-color: black;
-    text-align: center;
-    background-color: transparent;
+    &::after {
+        width: 50px;
+        height: 20px;
+        background: #33363a;
+        content: " ";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -10px;
+        margin-left: -25px;
+        border-radius: 10px;
+    }
+    span {
+        display: block;
+        margin: 0 auto;
+        position: relative;
+        z-index: 9;
+        height: 53px;
+        width: 62px;
+        &::before {
+            margin: 0;
+            padding: 0;
+            width: auto !important;
+            font-family: fontello;
+        }
+    }
 }
 
 #game-screen {
@@ -408,6 +428,15 @@ button {
     padding: 3px;
 }
 
+#pause-modal-btns-sounds {
+    span::before {
+        content: '\e802';
+    }
+    &.muted span::before {
+        content: '\e803';
+    }
+}
+
 
 /*keyframes*/
 
@@ -415,12 +444,10 @@ button {
     0% {
         height: 70px;
         width: 70px;
-        font-size: 50px;
     }
     100% {
-        height: 80px;
-        width: 80px;
-        font-size: 60px;
+        height: 90px;
+        width: 90px;
     }
 }
 
