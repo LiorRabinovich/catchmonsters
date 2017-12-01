@@ -60,8 +60,7 @@ main.prototype = {
         this._cache.$score = $('#score span');
         this._cache.$timer = $('#timer');
         this._cache.$timerClock = $('#timer span');
-        this._cache.$gameAudio = $('#game-audio');
-        this._cache.$swipeAudio = $('#swipe-audio');
+        this._cache.$swipeSound = $('#swipe-sound');
         // score component
         this._cache.$scoresComponentContent = $(".scores-component-content");
         this._cache.$scoresComponentContentList = $(".scores-component-content ul");
@@ -83,16 +82,11 @@ main.prototype = {
         this._cache.$playAgain = $('.play-again');
     },
     _buildElements: function () {
-        // start play game audio 
-        this._cache.$gameAudio[0].volume = 0.4;
-        // this._cache.$gameAudio[0].autoplay = true;
-        this._cache.$gameAudio[0].loop = true;
-
         // set timer
         this._vars.timer = this._vars.startTimer;
 
-        // set swipe audio volume
-        this._cache.$swipeAudio[0].volume = 0.6;
+        // set swipe sound volume
+        this._cache.$swipeSound[0].volume = 0.6;
 
         // get and print best
         this._getAndPrintBestScore();
@@ -108,14 +102,14 @@ main.prototype = {
 
         // listen on gamescreen touchmove event
         this._cache.$body.on('touchstart', function (e) {
-            self._cache.$swipeAudio[0].currentTime = 0;
-            self._cache.$swipeAudio[0].play();
-            self._cache.$swipeAudio[0].loop = true;
+            self._cache.$swipeSound[0].currentTime = 0;
+            self._cache.$swipeSound[0].play();
+            self._cache.$swipeSound[0].loop = true;
         });
         this._cache.$body.on('touchend', function (e) {
-            self._cache.$swipeAudio[0].currentTime = 0;
-            self._cache.$swipeAudio[0].play();
-            self._cache.$swipeAudio[0].loop = false;
+            self._cache.$swipeSound[0].currentTime = 0;
+            self._cache.$swipeSound[0].play();
+            self._cache.$swipeSound[0].loop = false;
         });
         this._cache.$body.on('touchstart touchend touchmove', function (e) {
             var touch = null,
@@ -141,8 +135,6 @@ main.prototype = {
                 if ($(target).closest('#start').length > 0) {
                     // remove start element
                     self._cache.$start.toggleClass('hide', true);
-                    // set volume
-                    self._cache.$gameAudio[0].volume = 0.2;
                     // catch current monster
                     self._catchCurrentMonster();
                     // start timer
@@ -188,8 +180,8 @@ main.prototype = {
         });
 
         this._cache.$pauseModalBtnsSounds.on('touchstart', function (e) {
-            var action = !self._cache.$gameAudio[0].muted;
-            // muted all audio
+            var action = !$(this).hasClass('muted');
+            // muted all sound
             self._toggleMutedSounds(action);
             // toggle class muted
             $(this).toggleClass('muted', action);
@@ -197,8 +189,7 @@ main.prototype = {
 
     },
     _toggleMutedSounds: function (action) {
-        this._cache.$gameAudio[0].muted = (action ? action : !this._cache.$gameAudio[0].muted);
-        this._cache.$swipeAudio[0].muted = (action ? action : !this._cache.$swipeAudio[0].muted);
+        this._cache.$swipeSound[0].muted = (action ? action : !this._cache.$swipeSound[0].muted);
     },
     _getAndPrintBestScore: function () {
         // get and print best
