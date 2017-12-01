@@ -1,5 +1,5 @@
 # Catch Monster
-* html 5 game with jquery + sass + grunt + cordova
+* html 5 game with jquery + sass(compass) + grunt + cordova
 
 ## Screenshots
 ![screenshots](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/screenshots.gif)

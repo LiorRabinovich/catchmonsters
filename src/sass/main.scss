@@ -1,6 +1,6 @@
 @import "helpers";
 @import "_fontello";
-@import "compass/css3";
+$current-prefix: true;
 @import "compass/utilities/sprites";
 @import "monsters-sprite/*.png";
 @include all-monsters-sprite-sprites(true);
@@ -240,11 +240,9 @@ button {
 }
 
 #start-animate-cursor {
-    position: absolute;
     top: 50%;
     left: -10px;
     z-index: 99;
-    opacity: 0.8;
     position: absolute;
     opacity: 0.8;
     animation: startAnimateCursor 1s infinite;
