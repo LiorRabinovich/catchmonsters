@@ -1,4 +1,5 @@
 # Catch Monster
+* html 5 game with jquery + sass + grunt + cordova
 
 ## How to install
 * run `npm install`
@@ -12,3 +13,10 @@
 
 ## Run in Android
 * run `cordova run android` or `cordova run android --device`
+
+# Get Monsters names arr
+* run `node src/sprites/get-monsters-names-arr.js`
+
+# Credits for assets
+* <http://www.iconarchive.com/show/pokemon-icons-by-hektakun.2.html>
+* <https://opengameart.org/content/grass-1>
