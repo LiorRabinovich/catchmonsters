@@ -22,8 +22,4 @@
 * <https://opengameart.org/content/grass-1>
 
 ## Screenshots
-![first-screen](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/first-screen.png)
-![mid-game](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/mid-game.png)
-![paused](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/paused.png)
-![mid-game-2](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/mid-game-2.png)
-![end-game](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/end-game.png)
+![screenshots](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/screenshots.gif)
