@@ -3,6 +3,7 @@
 
 ## Screenshots
 ![screenshots](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/screenshots.gif)
+<https://www.youtube.com/watch?v=13MkfceShic>
 
 ## How to install
 * run `npm install`

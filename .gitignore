@@ -83,3 +83,11 @@ www
 
 #info
 info.txt
+
+#build
+build.json
+*.keystore
+
+#vidio
+*.mp4
+*.webm

@@ -4,7 +4,7 @@
     <description>
         Let's catch monsters
     </description>
-    <author email="lior0303@gmail.com">
+    <author email="lior0303@gmail.com" href="https://github.com/LiorRabinovich/catchmonsters">
         Lior Rabinovich
     </author>
     <content src="index.html" />
