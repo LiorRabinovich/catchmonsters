@@ -205,6 +205,8 @@ main.prototype = {
     _startApp: function () {
         // show start monster
         this._cache.$start.toggleClass('hide', false);
+        // random all monsters
+        this._shuffleMonsters();
         // get random monster to current monster
         this._randomMonster();
         // add monster image to src
@@ -230,6 +232,25 @@ main.prototype = {
             self._cache.$timerClock.html(Math.floor(self._vars.timer / 60) + ':' + ('0' + Math.floor(self._vars.timer % 60)).slice(-2));
         }, 1000);
     },
+    _shuffleMonsters: function () {
+        var self = this,
+            currentIndex = this._vars.monsters.length, temporaryValue, randomIndex;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = self._vars.monsters[currentIndex];
+            self._vars.monsters[currentIndex] = self._vars.monsters[randomIndex];
+            self._vars.monsters[randomIndex] = temporaryValue;
+        }
+
+        return this._vars.monsters;
+    },
     _catchCurrentMonster: function () {
         if (this._vars.timer == 0) return false;
 
@@ -253,7 +274,9 @@ main.prototype = {
         this._animateMonster();
     },
     _randomMonster: function () {
-        this._vars.currentMonster = this._vars.monsters[(Math.floor(Math.random() * ((this._vars.monsters.length - 1) - 0)) + 0)];
+        this._vars.monsters.push(this._vars.monsters[0]);
+        this._vars.monsters.shift();
+        this._vars.currentMonster = this._vars.monsters[0];
     },
     _animateMonster: function () {
         var self = this,
