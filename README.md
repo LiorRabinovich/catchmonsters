@@ -1,6 +1,9 @@
 # Catch Monster
 * html 5 game with jquery + sass(compass) + grunt + cordova
 
+## Google Play
+<https://play.google.com/store/apps/details?id=io.cordova.catchmonsters>
+
 ## Screenshots
 ![screenshots](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/screenshots.gif)
 <https://www.youtube.com/watch?v=13MkfceShic>
