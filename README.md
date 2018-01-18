@@ -8,6 +8,15 @@
 ![screenshots](https://raw.githubusercontent.com/LiorRabinovich/catchmonsters/master/screenshots/screenshots.gif)
 <https://www.youtube.com/watch?v=13MkfceShic>
 
+## dependence
+* node.js (download from `https://nodejs.org`)
+* grunt (run `npm install -g grunt-cli`)
+* ruby (for windows download visrion *2.4.3-1* from `https://rubyinstaller.org/downloads/`)
+* sass (run `gem install sass`)
+* compass (run `gem install compass`)
+* autoprefixer-rails (run `gem install autoprefixer-rails`)
+* cordova (docs `https://cordova.apache.org/docs/en/latest/`)
+
 ## How to install
 * run `npm install`
 * run `npm start` or `grunt && cordova prepare`
